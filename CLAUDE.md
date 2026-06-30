@@ -122,6 +122,6 @@ Work through these phases **in order**. Do not skip ahead or combine phases unle
 (Update this section as phases are completed, so future sessions pick up where things left off.)
 
 - [x] Phase 0 — Setup (folder structure confirmed, .gitignore confirmed, git initialized locally — no remote yet, Anthropic API key not yet created by user)
-- [ ] Phase 1 — Backend (code written: prompt.js + index.js + package.json, calling Anthropic API directly via Node 18 fetch; not yet deployed — no API key or AWS deploy run yet)
+- [x] Phase 1 — Backend (deployed and verified end-to-end: Lambda `corporate-jargon-translator` in us-east-1, fronted by API Gateway HTTP API at <https://xe920nlaba.execute-api.us-east-1.amazonaws.com>, calling Anthropic API directly via Node 18 fetch, billing credits added, confirmed returning correct translations)
 - [ ] Phase 2 — Frontend
 - [ ] Phase 3 — Polish + Launch

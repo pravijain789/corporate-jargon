@@ -61,6 +61,8 @@ exports.handler = async (event) => {
     });
 
     if (!apiResponse.ok) {
+      const errorBody = await apiResponse.text();
+      console.error(`Anthropic API error: status=${apiResponse.status} body=${errorBody}`);
       return response(502, { error: "Translation service is unavailable right now." });
     }
 
@@ -68,11 +70,13 @@ exports.handler = async (event) => {
     const translation = data.content?.[0]?.text?.trim();
 
     if (!translation) {
+      console.error(`Anthropic API returned no translation. Raw response: ${JSON.stringify(data)}`);
       return response(502, { error: "Translation service returned an empty response." });
     }
 
     return response(200, { translation });
-  } catch {
+  } catch (error) {
+    console.error(`Unhandled error calling Anthropic API: ${error.message}\n${error.stack}`);
     return response(500, { error: "Something went wrong translating that." });
   }
 };
