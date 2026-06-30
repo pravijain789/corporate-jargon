@@ -1,0 +1,7 @@
+{
+  "name": "corporate-jargon-lambda",
+  "version": "1.0.0",
+  "description": "Lambda handler that translates corporate jargon using the Anthropic API",
+  "main": "index.js",
+  "license": "MIT"
+}
