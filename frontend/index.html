@@ -1,0 +1,1477 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corporate Jargon Translator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ede6d6;
+        --paper: #faf7f0;
+        --paper-edge: #dcd3bc;
+        --ink: #1f1b16;
+        --ink-soft: #5b554a;
+        --stamp: #b23a2e;
+        --stamp-dark: #8c2c22;
+        --redact: #15120e;
+        --highlight: #f2c94c;
+        --green: #5b8a4f;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        background:
+          radial-gradient(
+            ellipse at 18% 12%,
+            rgba(255, 255, 255, 0.38),
+            transparent 48%
+          ),
+          radial-gradient(rgba(31, 27, 22, 0.065) 1px, transparent 1.4px),
+          var(--bg);
+        background-size:
+          auto,
+          24px 24px,
+          auto;
+        font-family: "IBM Plex Mono", monospace;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      body::before {
+        content: "CONFIDENTIAL · DO NOT FORWARD · CONFIDENTIAL · DO NOT FORWARD · ";
+        position: fixed;
+        inset: -20% -40%;
+        z-index: 0;
+        font-family: "Special Elite", monospace;
+        font-size: 13px;
+        line-height: 62px;
+        letter-spacing: 0.1em;
+        color: var(--ink);
+        opacity: 0.04;
+        transform: rotate(-16deg);
+        white-space: pre-wrap;
+        word-spacing: 36px;
+        pointer-events: none;
+      }
+
+      .deco {
+        position: fixed;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .deco-tape {
+        background: repeating-linear-gradient(
+          45deg,
+          rgba(31, 27, 22, 0.07) 0 4px,
+          transparent 4px 8px
+        );
+        background-color: rgba(242, 201, 76, 0.22);
+      }
+      .deco-stamp-ghost {
+        font-family: "Special Elite", monospace;
+        border: 4px solid var(--stamp);
+        color: var(--stamp);
+        border-radius: 5px;
+        padding: 5px 14px;
+        font-size: 18px;
+        opacity: 0.11;
+      }
+      .deco-ring {
+        border-radius: 50%;
+        border: 7px solid var(--ink-soft);
+        opacity: 0.09;
+      }
+      .deco-sticky {
+        font-family: "Special Elite", monospace;
+        font-size: 11.5px;
+        line-height: 1.45;
+        color: var(--ink-soft);
+        background: var(--highlight);
+        padding: 11px 10px 14px;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.13);
+        opacity: 0.52;
+        width: 106px;
+      }
+      .deco-clip path,
+      .deco-clip ellipse {
+        stroke: var(--ink-soft);
+        fill: none;
+      }
+
+      @media (max-width: 860px) {
+        .deco { display: none; }
+      }
+
+      .desk {
+        width: 100%;
+        max-width: 900px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .memo {
+        background: var(--paper);
+        border: 1px solid var(--paper-edge);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.65) inset,
+          0 20px 44px -10px rgba(31, 27, 22, 0.32),
+          0 2px 0 var(--paper-edge);
+        position: relative;
+        padding: 0 48px 28px;
+      }
+
+      .memo-stripe {
+        height: 6px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--redact) 0 18px,
+          transparent 18px 26px
+        );
+        opacity: 0.82;
+        margin: 0 -36px 0;
+      }
+
+      .eyebrow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        border-bottom: 1px dashed var(--paper-edge);
+        padding: 10px 0 10px;
+        margin-bottom: 14px;
+      }
+
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        gap: 12px;
+      }
+
+      .title-block {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .stamp-title {
+        font-family: "Special Elite", monospace;
+        font-size: 38px;
+        line-height: 1.1;
+        color: var(--stamp);
+        transform: rotate(-1.4deg);
+        display: inline-block;
+        border: 3px solid var(--stamp);
+        padding: 4px 12px;
+        border-radius: 3px;
+        position: relative;
+        margin-bottom: 4px;
+      }
+      .stamp-title::after {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border: 1px solid var(--stamp);
+        border-radius: 3px;
+        opacity: 0.45;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        color: var(--ink-soft);
+        margin-top: 6px;
+      }
+
+      .mascot-col {
+        position: relative;
+        flex-shrink: 0;
+        width: 76px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .mascot-col svg {
+        width: 72px;
+        height: 72px;
+        display: block;
+      }
+      .mascot-label {
+        font-size: 11px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        text-align: center;
+        margin-top: 3px;
+        line-height: 1.3;
+      }
+
+      .speech-bubble {
+        position: absolute;
+        right: calc(100% + 10px);
+        top: 6px;
+        width: 172px;
+        background: var(--paper);
+        border: 1.5px solid var(--ink);
+        border-radius: 3px;
+        padding: 7px 9px;
+        font-size: 13px;
+        line-height: 1.38;
+        color: var(--ink);
+        opacity: 0;
+        transform: translateX(6px) scale(0.93);
+        transform-origin: right center;
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
+        pointer-events: none;
+        z-index: 10;
+      }
+      .speech-bubble.show {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      .speech-bubble::after {
+        content: "";
+        position: absolute;
+        right: -7px;
+        top: 16px;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 7px solid var(--ink);
+      }
+      .speech-bubble::before {
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 17px;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 6px solid var(--paper);
+        z-index: 1;
+      }
+
+      #mascotArm {
+        transform: rotate(-35deg);
+        transform-origin: 50px 64px;
+      }
+      #mascotArm.swing {
+        animation: armSwing 0.5s ease;
+      }
+      @keyframes armSwing {
+        0%   { transform: rotate(-35deg); }
+        45%  { transform: rotate(10deg); }
+        62%  { transform: rotate(-6deg); }
+        100% { transform: rotate(-35deg); }
+      }
+
+      .field-label {
+        font-size: 13.5px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 7px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 104px;
+        resize: none;
+        background: repeating-linear-gradient(
+          var(--paper) 0px,
+          var(--paper) 25px,
+          var(--paper-edge) 26px
+        );
+        border: 1px solid var(--paper-edge);
+        border-left: 3px solid var(--stamp);
+        padding: 8px 12px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 16px;
+        line-height: 28px;
+        color: var(--ink);
+        outline: none;
+        display: block;
+      }
+      textarea::placeholder { color: #9b9384; }
+      textarea:focus {
+        border-left-color: var(--stamp-dark);
+        box-shadow: 0 0 0 2px rgba(178, 58, 46, 0.1);
+      }
+
+      .char-counter {
+        text-align: right;
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin-top: 3px;
+        letter-spacing: 0.04em;
+        transition: color 0.15s;
+      }
+      .char-counter.warn { color: var(--stamp); }
+
+      .actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      button.stamp-btn {
+        font-family: "Special Elite", monospace;
+        font-size: 18px;
+        letter-spacing: 0.04em;
+        background: var(--ink);
+        color: var(--paper);
+        border: none;
+        padding: 13px 30px;
+        cursor: pointer;
+        transition:
+          background 0.12s ease,
+          transform 0.08s ease;
+      }
+      button.stamp-btn:hover { background: var(--stamp-dark); }
+      button.stamp-btn:active { transform: translateY(2px) scale(0.99); }
+      button.stamp-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      button.stamp-btn.loading {
+        background: var(--stamp-dark);
+        animation: btnPulse 1s ease-in-out infinite;
+      }
+      @keyframes btnPulse {
+        0%, 100% { opacity: 0.6; }
+        50%       { opacity: 1; }
+      }
+
+      .result-wrap { margin-top: 12px; }
+
+      .redaction-line {
+        height: 13px;
+        background: var(--redact);
+        width: 0%;
+        transition: width 0.38s ease;
+        margin-bottom: 0;
+      }
+
+      .result {
+        border: 1px dashed var(--paper-edge);
+        padding: 12px 14px 11px;
+        background: #fffdf8;
+        opacity: 0;
+        transform: translateY(-5px) scale(0.985);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
+        position: relative;
+        overflow: visible;
+      }
+      .result.show {
+        opacity: 1;
+        transform: none;
+      }
+
+      .result-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .result-label {
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .verdict-emoji {
+        font-size: 28px;
+        display: inline-block;
+        transform: rotate(-8deg) scale(0);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .result.show .verdict-emoji {
+        transform: rotate(-8deg) scale(1);
+      }
+
+      .truth-text {
+        font-size: 14px;
+        line-height: 1.55;
+        color: var(--ink);
+        min-height: 22px;
+      }
+
+      /* Translated output (from API) */
+      .translated-text {
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--ink);
+        margin-bottom: 9px;
+        animation: fadeInText 0.35s ease;
+      }
+      @keyframes fadeInText {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      /* Highlighted original below translation */
+      .jargon-decoded {
+        border-top: 1px dashed var(--paper-edge);
+        padding-top: 7px;
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: var(--ink-soft);
+        animation: fadeInText 0.35s ease 0.1s both;
+      }
+      .jargon-decoded-label {
+        display: block;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        color: var(--ink-soft);
+      }
+
+      /* Skeleton shimmer for loading state */
+      .skeleton-line {
+        height: 13px;
+        background: linear-gradient(
+          90deg,
+          var(--paper-edge) 25%,
+          #ede7d9 50%,
+          var(--paper-edge) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s ease-in-out infinite;
+        border-radius: 2px;
+        margin-bottom: 9px;
+      }
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .meter-wrap {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--paper-edge);
+      }
+      .meter-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12.5px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 5px;
+      }
+      .meter-track {
+        height: 8px;
+        background: var(--paper-edge);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .meter-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 2px;
+        background: linear-gradient(
+          90deg,
+          var(--green),
+          var(--highlight) 55%,
+          var(--stamp)
+        );
+        transition: width 0.55s cubic-bezier(0.34, 1.2, 0.64, 1);
+      }
+      .meter-readout {
+        margin-top: 5px;
+        font-size: 13px;
+        color: var(--ink-soft);
+        font-style: italic;
+      }
+      .bs-percent {
+        font-family: "Special Elite", monospace;
+        font-size: 15px;
+        color: var(--stamp);
+      }
+
+      .particle-field {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 8;
+      }
+      .particle {
+        position: absolute;
+        bottom: 0;
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      .particle.fly {
+        animation: floatUp 1.1s ease-out forwards;
+      }
+      @keyframes floatUp {
+        0%  { transform: translate(0, 0) rotate(0deg) scale(0.6); opacity: 0; }
+        12% { opacity: 1; }
+        100%{ transform: translate(var(--dx), -140px) rotate(var(--rot)) scale(1); opacity: 0; }
+      }
+
+      .footer-note {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--ink-soft);
+        text-align: center;
+        letter-spacing: 0.04em;
+      }
+
+      .stamp-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+      }
+      .stamp-mark {
+        font-family: "Special Elite", monospace;
+        font-size: 58px;
+        color: var(--stamp);
+        border: 6px solid var(--stamp);
+        border-radius: 7px;
+        padding: 8px 28px;
+        transform: scale(2.6) rotate(-12deg);
+        opacity: 0;
+      }
+      .stamp-mark.fire {
+        animation: slam 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+      }
+      @keyframes slam {
+        0%  { transform: scale(2.6) rotate(-12deg); opacity: 0; }
+        55% { transform: scale(0.92) rotate(-12deg); opacity: 1; }
+        70% { transform: scale(1.06) rotate(-12deg); opacity: 1; }
+        100%{ transform: scale(1) rotate(-12deg); opacity: 0; }
+      }
+      .shockwave {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--stamp);
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0;
+      }
+      .shockwave.go {
+        animation: ring 0.55s ease-out forwards;
+      }
+      @keyframes ring {
+        0%  { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; }
+        100%{ transform: translate(-50%, -50%) scale(7); opacity: 0; }
+      }
+      .memo.shake {
+        animation: memoShake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      }
+      @keyframes memoShake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+        40%, 60% { transform: translate3d(3px, 0, 0); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .result,
+        .verdict-emoji,
+        .stamp-mark,
+        .meter-fill,
+        button.stamp-btn,
+        button.stamp-btn.loading,
+        #mascotArm.swing,
+        .speech-bubble,
+        .shockwave.go,
+        .memo.shake,
+        .particle.fly,
+        .skeleton-line {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      .buzz-word {
+        position: fixed;
+        font-family: "Special Elite", monospace;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        color: var(--ink);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+        white-space: nowrap;
+        animation: buzzDrift linear infinite;
+      }
+      @keyframes buzzDrift {
+        0%  { opacity: 0; transform: translateY(0) rotate(var(--rot)); }
+        8%  { opacity: var(--op); }
+        88% { opacity: var(--op); }
+        100%{ opacity: 0; transform: translateY(-110vh) rotate(var(--rot)); }
+      }
+
+      .desk {
+        animation: cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes cardIn {
+        from { opacity: 0; transform: translateY(28px) scale(0.97); }
+        to   { opacity: 1; transform: none; }
+      }
+
+      .stamp-title {
+        animation: titlePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+      }
+      @keyframes titlePop {
+        from { transform: rotate(-1.4deg) scale(0.88); opacity: 0; }
+        to   { transform: rotate(-1.4deg) scale(1); opacity: 1; }
+      }
+
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .pill {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        border: 1px solid var(--paper-edge);
+        background: var(--paper);
+        color: var(--ink-soft);
+        padding: 3px 9px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition:
+          border-color 0.12s,
+          color 0.12s,
+          background 0.12s;
+        user-select: none;
+      }
+      .pill:hover {
+        border-color: var(--stamp);
+        color: var(--stamp);
+        background: rgba(178, 58, 46, 0.05);
+      }
+      .pill-label {
+        font-size: 12.5px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+
+      .flag {
+        background: rgba(242, 201, 76, 0.5);
+        border-bottom: 1.5px solid var(--stamp);
+        padding: 0 1px;
+        cursor: help;
+        position: relative;
+        border-radius: 2px;
+      }
+      .flag:hover { background: rgba(242, 201, 76, 0.85); }
+      .flag[data-tip]:hover::after {
+        content: attr(data-tip);
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--ink);
+        color: var(--paper);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12.5px;
+        white-space: nowrap;
+        padding: 4px 8px;
+        border-radius: 3px;
+        z-index: 20;
+        pointer-events: none;
+      }
+      .flag[data-tip]:hover::before {
+        content: "";
+        position: absolute;
+        bottom: calc(100% + 1px);
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: var(--ink);
+        z-index: 20;
+      }
+
+      .tier-badge {
+        display: inline-block;
+        font-family: "Special Elite", monospace;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        color: var(--paper);
+        background: var(--stamp);
+        padding: 2px 9px;
+        border-radius: 2px;
+        transform: rotate(-2deg);
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+      }
+
+      /* Sound toggle */
+      .sound-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+        padding: 0 5px 0 0;
+        vertical-align: middle;
+        opacity: 0.6;
+        transition: opacity 0.12s;
+        line-height: 1;
+      }
+      .sound-toggle:hover { opacity: 1; }
+
+      .result-actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 7px;
+      }
+
+      .copy-btn,
+      .share-btn {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        background: none;
+        border: 1px solid var(--ink-soft);
+        color: var(--ink-soft);
+        padding: 5px 12px;
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.12s ease;
+      }
+      .copy-btn:hover {
+        border-color: var(--green);
+        color: var(--green);
+        background: rgba(91, 138, 79, 0.06);
+      }
+      .share-btn:hover {
+        border-color: var(--stamp);
+        color: var(--stamp);
+        background: rgba(178, 58, 46, 0.05);
+      }
+
+      #mascotArm.idle {
+        animation: armBob 2.4s ease-in-out infinite;
+      }
+      @keyframes armBob {
+        0%, 100% { transform: rotate(-35deg); }
+        50%       { transform: rotate(-27deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background desk clutter -->
+    <svg
+      class="deco deco-clip"
+      style="left: 5%; top: 12%; opacity: 0.38"
+      width="44" height="110" viewBox="0 0 40 100"
+    >
+      <path
+        d="M20 10 C20 4 26 4 26 10 L26 68 C26 78 14 78 14 68 L14 24 C14 18 22 18 22 24 L22 62"
+        stroke="#5b554a" stroke-width="3.5" fill="none" stroke-linecap="round"
+        transform="rotate(-10 20 50)"
+      />
+    </svg>
+
+    <svg
+      class="deco"
+      style="right: 7%; top: 9%; opacity: 0.32"
+      width="38" height="46" viewBox="0 0 40 50"
+    >
+      <g transform="rotate(16 20 25)">
+        <circle cx="20" cy="14" r="10" fill="#B23A2E" opacity="0.55" />
+        <path d="M20 22 L14 38 L26 38 Z" fill="#5b554a" opacity="0.5" />
+      </g>
+    </svg>
+
+    <div class="deco deco-ring" style="right: 9%; bottom: 13%; width: 120px; height: 120px"></div>
+    <div class="deco deco-stamp-ghost" style="left: 6%; bottom: 15%; transform: rotate(12deg)">REJECTED</div>
+    <div class="deco deco-tape" style="left: 13%; top: 5%; width: 60px; height: 20px; transform: rotate(-7deg);"></div>
+    <div class="deco deco-tape" style="right: 15%; bottom: 7%; width: 56px; height: 19px; transform: rotate(9deg);"></div>
+    <div class="deco deco-sticky" style="left: 8%; top: 30%; transform: rotate(-4deg)">
+      don't forget: TPS report cover sheet 😩
+    </div>
+
+    <div id="buzzContainer"></div>
+
+    <div class="desk">
+      <div class="memo">
+        <div class="memo-stripe"></div>
+
+        <div class="eyebrow">
+          <span>Confidential — Internal Use Only</span>
+          <span>
+            <button class="sound-toggle" id="soundToggle" title="Sound on">🔊</button>
+            <span id="memoNo">No. 0001</span>
+          </span>
+        </div>
+
+        <div class="header-row">
+          <div class="title-block">
+            <div class="stamp-title">Jargon Translator</div>
+            <div class="subtitle">Paste the buzzword soup. Get the truth back.</div>
+          </div>
+
+          <div class="mascot-col">
+            <div class="speech-bubble" id="speechBubble"></div>
+            <svg id="mascotSvg" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 92 Q14 64 34 64 Q54 64 54 92 Z"
+                fill="var(--paper)" stroke="var(--ink)" stroke-width="2" />
+              <circle cx="34" cy="36" r="20"
+                fill="var(--paper)" stroke="var(--ink)" stroke-width="2" />
+              <rect x="21" y="29" width="13" height="9" rx="2"
+                fill="none" stroke="var(--ink)" stroke-width="1.4" />
+              <rect x="34" y="29" width="13" height="9" rx="2"
+                fill="none" stroke="var(--ink)" stroke-width="1.4" />
+              <g id="mascotEyesNormal">
+                <circle cx="27.5" cy="33.5" r="1.8" fill="var(--ink)" />
+                <circle cx="40.5" cy="33.5" r="1.8" fill="var(--ink)" />
+              </g>
+              <g id="mascotEyesX" style="display: none">
+                <path d="M25.5 31.5 L29.5 35.5 M29.5 31.5 L25.5 35.5"
+                  stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" />
+                <path d="M38.5 31.5 L42.5 35.5 M42.5 31.5 L38.5 35.5"
+                  stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" />
+              </g>
+              <path id="mascotMouth" d="M27 44 Q34 48 41 44"
+                stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round" />
+              <g id="mascotArm">
+                <rect x="48" y="40" width="6" height="26" rx="3"
+                  fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8" />
+                <rect x="40" y="28" width="22" height="13" rx="2"
+                  fill="var(--stamp)" stroke="var(--ink)" stroke-width="1.4" />
+                <rect x="46" y="20" width="10" height="9" rx="1"
+                  fill="var(--paper)" stroke="var(--ink)" stroke-width="1.4" />
+              </g>
+            </svg>
+            <div class="mascot-label">Doris, Compliance</div>
+          </div>
+        </div>
+
+        <div class="field-label">
+          Re: (paste the email, the deck, the standup update — whatever)
+        </div>
+        <textarea
+          id="input"
+          maxlength="1000"
+          placeholder="e.g. Let's leverage synergies to ideate a scalable solution and circle back offline."
+        ></textarea>
+        <div class="char-counter" id="charCounter">0 / 1000</div>
+
+        <div class="pill-label">✦ try one of these:</div>
+        <div class="pills">
+          <span class="pill" data-text="Let's leverage synergies to ideate a scalable, best-in-class solution and circle back offline.">🎪 Full circus</span>
+          <span class="pill" data-text="We need to touch base and align on next steps before we deep dive.">🙄 Classic deck</span>
+          <span class="pill" data-text="Let's unpack the north star and move the needle on our core competency.">💀 Peak nothing</span>
+          <span class="pill" data-text="The team met and decided to try a different approach.">📋 Honest memo</span>
+        </div>
+
+        <div class="actions">
+          <button class="stamp-btn" id="translateBtn">Stamp It ▸</button>
+        </div>
+
+        <div class="result-wrap" id="resultWrap">
+          <div class="redaction-line" id="redactLine"></div>
+          <div class="result" id="result">
+            <div class="particle-field" id="particleField"></div>
+            <div class="result-head">
+              <span class="result-label">Truth, declassified</span>
+              <span class="verdict-emoji" id="verdictEmoji">🙄</span>
+            </div>
+            <div class="truth-text" id="truthText"></div>
+            <div class="meter-wrap">
+              <div class="meter-label">
+                <span>Honest</span>
+                <span>BS-O-METER <span class="bs-percent" id="bsPercent">0%</span></span>
+                <span>Max Spin</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="meterFill"></div>
+              </div>
+              <div class="meter-readout" id="meterReadout"></div>
+              <div style="margin-top: 8px">
+                <span class="tier-badge" id="tierBadge">—</span>
+              </div>
+            </div>
+            <div class="result-actions">
+              <button class="copy-btn" id="copyBtn">⎘ Copy truth</button>
+              <button class="share-btn" id="shareBtn">⬇ Save as image</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-note">Every memo gets a number. This one's yours.</div>
+      </div>
+    </div>
+
+    <div class="stamp-overlay" id="stampOverlay">
+      <div class="stamp-mark" id="stampMark">DECODED</div>
+      <div class="shockwave" id="shockwave"></div>
+    </div>
+
+    <script>
+      const API_URL = "https://xe920nlaba.execute-api.us-east-1.amazonaws.com/translate";
+
+      const JARGON_WORDS = [
+        "synergy", "synergies", "leverage", "ideate", "circle back",
+        "bandwidth", "low-hanging fruit", "move the needle", "deep dive",
+        "touch base", "alignment", "scalable", "actionable", "paradigm",
+        "disrupt", "best-in-class", "value-add", "core competency",
+        "north star", "take this offline", "drill down", "pivot",
+        "stakeholder", "cross-functional", "optimize", "streamline",
+        "unpack", "robust",
+      ];
+
+      const JARGON_DEFS = {
+        synergy: "things working together",
+        synergies: "things working together",
+        leverage: "use",
+        ideate: "think",
+        "circle back": "talk later",
+        bandwidth: "time / capacity",
+        "low-hanging fruit": "the easy stuff",
+        "move the needle": "make a difference",
+        "deep dive": "a closer look",
+        "touch base": "talk",
+        alignment: "agreement",
+        scalable: "can grow",
+        actionable: "doable",
+        paradigm: "model",
+        disrupt: "shake up",
+        "best-in-class": "actually good",
+        "value-add": "benefit",
+        "core competency": "what we're good at",
+        "north star": "main goal",
+        "take this offline": "discuss privately",
+        "drill down": "look closer",
+        pivot: "change direction",
+        stakeholder: "person who cares",
+        "cross-functional": "across teams",
+        optimize: "improve",
+        streamline: "simplify",
+        unpack: "explain",
+        robust: "solid",
+      };
+
+      const TIERS = [
+        { max: 15,  name: "Intern-level" },
+        { max: 40,  name: "Middle Manager" },
+        { max: 65,  name: "VP Energy" },
+        { max: 85,  name: "Consultant Special" },
+        { max: 100, name: "Peak McKinsey" },
+      ];
+
+      const VERDICTS = [
+        {
+          max: 0, emoji: "📋", label: "Suspiciously honest",
+          note: "barely a memo at all",
+          mouth: "M27 43 Q34 48 41 43", eyesX: false,
+          quips: ["Wait... plain English?", "Filing under: unusually direct.", "No notes. Disturbingly clear."],
+        },
+        {
+          max: 2, emoji: "🙄", label: "Mild spin",
+          note: "your standard Tuesday email",
+          mouth: "M27 45 Q34 42 41 45", eyesX: false,
+          quips: ["Standard Tuesday energy.", "Mild spin. Seen worse before lunch.", "A little fluff, nothing fatal."],
+        },
+        {
+          max: 4, emoji: "🎪", label: "Circus-level",
+          note: "send this back, twice",
+          mouth: "M26 43 L30 47 L34 43 L38 47 L42 43", eyesX: false,
+          quips: ["Send this back. Twice.", "Someone wanted a meeting about this.", "I counted buzzwords. I need a minute."],
+        },
+        {
+          max: 99, emoji: "💀", label: "Total nonsense",
+          note: "no humans were harmed, several were confused",
+          mouth: "M27 44 L41 44", eyesX: true,
+          quips: ["No idea what this means either.", "This memo achieved peak nothing.", "Stamping: DECODE AT OWN RISK."],
+        },
+      ];
+
+      function memoNumber() {
+        return "No. " + String(Math.floor(Math.random() * 900) + 100);
+      }
+
+      function escapeHtml(s) {
+        return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      }
+
+      function highlightJargon(text) {
+        const sorted = [...JARGON_WORDS].sort((a, b) => b.length - a.length);
+        let html = escapeHtml(text);
+        sorted.forEach(w => {
+          const def = JARGON_DEFS[w] || "";
+          const re = new RegExp("(" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+          html = html.replace(re, m =>
+            `<span class="flag" data-tip="${def ? "→ " + def : "buzzword"}">${m}</span>`
+          );
+        });
+        return html;
+      }
+
+      // ── DOM refs ──
+      const btn          = document.getElementById("translateBtn");
+      const input        = document.getElementById("input");
+      const result       = document.getElementById("result");
+      const redactLine   = document.getElementById("redactLine");
+      const truthText    = document.getElementById("truthText");
+      const verdictEmoji = document.getElementById("verdictEmoji");
+      const meterFill    = document.getElementById("meterFill");
+      const meterReadout = document.getElementById("meterReadout");
+      const stampMark    = document.getElementById("stampMark");
+      const memoNo       = document.getElementById("memoNo");
+      const mascotArm    = document.getElementById("mascotArm");
+      const mascotMouth  = document.getElementById("mascotMouth");
+      const mascotEyesN  = document.getElementById("mascotEyesNormal");
+      const mascotEyesX  = document.getElementById("mascotEyesX");
+      const speechBubble = document.getElementById("speechBubble");
+      const shockwave    = document.getElementById("shockwave");
+      const particleField= document.getElementById("particleField");
+      const bsPercent    = document.getElementById("bsPercent");
+      const memoEl       = document.querySelector(".memo");
+      const tierBadge    = document.getElementById("tierBadge");
+      const shareBtn     = document.getElementById("shareBtn");
+      const copyBtn      = document.getElementById("copyBtn");
+      const charCounter  = document.getElementById("charCounter");
+      const soundToggle  = document.getElementById("soundToggle");
+      const noMotion     = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      let soundOn = true;
+      let lastResult = null;
+
+      // ── Sound toggle ──
+      soundToggle.addEventListener("click", () => {
+        soundOn = !soundOn;
+        soundToggle.textContent = soundOn ? "🔊" : "🔇";
+        soundToggle.title = soundOn ? "Sound on" : "Sound off";
+      });
+
+      // ── Char counter ──
+      input.addEventListener("input", () => {
+        const len = input.value.length;
+        charCounter.textContent = `${len} / 1000`;
+        charCounter.classList.toggle("warn", len > 850);
+      });
+
+      // ── Stamp thud sound (Web Audio, no file needed) ──
+      let audioCtx = null;
+      function stampSound() {
+        if (!soundOn || noMotion) return;
+        try {
+          audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.exponentialRampToValueAtTime(48, now + 0.12);
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(0.35, now + 0.008);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.24);
+          const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.05, audioCtx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < data.length; i++)
+            data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+          const noise = audioCtx.createBufferSource();
+          const ng = audioCtx.createGain();
+          noise.buffer = buf;
+          ng.gain.setValueAtTime(0.12, now);
+          ng.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+          noise.connect(ng).connect(audioCtx.destination);
+          noise.start(now);
+        } catch (e) { /* audio not available */ }
+      }
+
+      function animateCount(el, target, dur) {
+        if (noMotion) { el.textContent = target + "%"; return; }
+        const t0 = performance.now();
+        (function tick(now) {
+          const p = Math.min(1, (now - t0) / dur);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + "%";
+          if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+      }
+
+      function particles(emoji, intensity) {
+        if (noMotion) return;
+        particleField.innerHTML = "";
+        const n = 5 + Math.round(intensity * 8);
+        for (let i = 0; i < n; i++) {
+          const p = document.createElement("span");
+          p.className = "particle";
+          p.textContent = emoji;
+          const delay = Math.random() * 200;
+          p.style.left = 28 + Math.random() * 44 + "%";
+          p.style.setProperty("--dx", (Math.random() - 0.5) * 150 + "px");
+          p.style.setProperty("--rot", (Math.random() - 0.5) * 80 + "deg");
+          p.style.fontSize = 15 + Math.random() * 13 + "px";
+          p.style.animationDelay = delay + "ms";
+          particleField.appendChild(p);
+          requestAnimationFrame(() => p.classList.add("fly"));
+          setTimeout(() => p.remove(), 1400 + delay);
+        }
+      }
+
+      // ── Show Doris speech bubble (force re-trigger animation) ──
+      function showBubble(text) {
+        speechBubble.textContent = text;
+        speechBubble.classList.remove("show");
+        void speechBubble.offsetWidth;
+        speechBubble.classList.add("show");
+      }
+
+      // ── Show skeleton while API is pending ──
+      function showLoadingSkeleton() {
+        redactLine.style.width = "30%";
+        truthText.innerHTML =
+          '<div class="skeleton-line"></div>' +
+          '<div class="skeleton-line" style="width:82%"></div>' +
+          '<div class="skeleton-line" style="width:58%"></div>';
+        verdictEmoji.textContent = "⌛";
+        tierBadge.textContent = "—";
+        bsPercent.textContent = "—";
+        meterReadout.textContent = "";
+        meterFill.style.width = "0%";
+        result.classList.add("show");
+      }
+
+      // ── Main async handler ──
+      async function handleStamp() {
+        const text = input.value.trim();
+        if (!text) {
+          showBubble("I can't redact air.");
+          input.focus();
+          return;
+        }
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+        btn.classList.add("loading");
+        result.classList.remove("show");
+        redactLine.style.width = "0%";
+        memoNo.textContent = memoNumber();
+        speechBubble.classList.remove("show");
+        mascotArm.classList.remove("idle");
+
+        // Fire animations + sound immediately
+        stampSound();
+        [stampMark, shockwave, mascotArm].forEach(el => {
+          const cls = el === mascotArm ? "swing" : el === shockwave ? "go" : "fire";
+          el.classList.remove(cls);
+          void el.offsetWidth;
+          el.classList.add(cls);
+        });
+        memoEl.classList.remove("shake");
+        void memoEl.offsetWidth;
+        memoEl.classList.add("shake");
+
+        // Compute client-side metrics from the original text (never from API)
+        const lower = text.toLowerCase();
+        let count = 0;
+        JARGON_WORDS.forEach(w => { if (lower.includes(w)) count++; });
+        const pct     = Math.min(100, count * 22 + 8);
+        const verdict = VERDICTS.find(v => count <= v.max) || VERDICTS[VERDICTS.length - 1];
+        const tier    = TIERS.find(t => pct <= t.max) || TIERS[TIERS.length - 1];
+
+        // Kick off API call, wrapped so it never rejects (we inspect outcome)
+        let apiSettled = false;
+        const apiPromise = fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+        })
+          .then(async r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const d = await r.json();
+            if (d.error) throw new Error(d.error);
+            return { ok: true, value: d.translation };
+          })
+          .catch(e => ({ ok: false, error: e }))
+          .then(outcome => { apiSettled = true; return outcome; });
+
+        // Wait for the animation window; then decide whether to show skeleton
+        await new Promise(r => setTimeout(r, 380));
+
+        if (!apiSettled) {
+          showLoadingSkeleton();
+          showBubble("...hold on, decoding this");
+        }
+
+        // Wait for API to finish (already done if apiSettled is true)
+        const outcome = await apiPromise;
+
+        if (!outcome.ok) {
+          // ── Error state ──
+          mascotMouth.setAttribute("d", "M27 44 L41 44");
+          mascotEyesN.style.display = "none";
+          mascotEyesX.style.display = "";
+          showBubble("The translation dept is on a coffee break ☕ — try again");
+
+          redactLine.style.width = "100%";
+          truthText.innerHTML =
+            `<span style="color:var(--ink-soft);font-style:italic;">` +
+            `Something went wrong. Doris is filing a complaint.` +
+            `</span>`;
+          verdictEmoji.textContent = "☕";
+          tierBadge.textContent = "⚠ Error";
+          bsPercent.textContent = "—";
+          meterFill.style.width = "0%";
+          meterReadout.textContent = "Translation service unavailable — please try again";
+          result.classList.add("show");
+        } else {
+          // ── Success state ──
+          const translated = outcome.value;
+
+          redactLine.style.width = "100%";
+
+          // Translation from API (prominent) + highlighted original (client-side, secondary)
+          truthText.innerHTML =
+            `<div class="translated-text">${escapeHtml(translated)}</div>` +
+            `<div class="jargon-decoded">` +
+            `<span class="jargon-decoded-label">Buzzwords detected:</span>` +
+            highlightJargon(text) +
+            `</div>`;
+
+          verdictEmoji.textContent = verdict.emoji;
+          meterFill.style.width = pct + "%";
+          animateCount(bsPercent, pct, 620);
+          meterReadout.textContent =
+            verdict.label + " — " + verdict.note + " (" + count + " buzzword" + (count !== 1 ? "s" : "") + ")";
+          tierBadge.textContent = "🏅 " + tier.name;
+
+          mascotMouth.setAttribute("d", verdict.mouth);
+          mascotEyesN.style.display = verdict.eyesX ? "none" : "";
+          mascotEyesX.style.display = verdict.eyesX ? "" : "none";
+
+          showBubble(verdict.quips[Math.floor(Math.random() * verdict.quips.length)]);
+
+          result.classList.add("show");
+          particles(verdict.emoji, pct / 100);
+
+          lastResult = { original: text, translated, count, pct, verdict, tier };
+
+          setTimeout(() => mascotArm.classList.add("idle"), 600);
+        }
+
+        // Debounce: re-enable button 1s after call finishes
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.classList.remove("loading");
+        }, 1000);
+      }
+
+      btn.addEventListener("click", handleStamp);
+
+      // Ctrl/Cmd+Enter from textarea
+      input.addEventListener("keydown", e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+          e.preventDefault();
+          handleStamp();
+        }
+      });
+
+      // ── Copy truth ──
+      copyBtn.addEventListener("click", async () => {
+        if (!lastResult) return;
+        const text = lastResult.translated;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          // Fallback for browsers that block clipboard without interaction
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+        copyBtn.textContent = "✓ Copied!";
+        setTimeout(() => { copyBtn.textContent = "⎘ Copy truth"; }, 1800);
+      });
+
+      // ── Floating background buzzwords ──
+      const DRIFT_WORDS = [
+        "synergy", "leverage", "ideate", "circle back", "bandwidth",
+        "low-hanging fruit", "move the needle", "deep dive", "touch base",
+        "alignment", "scalable", "actionable", "paradigm", "disrupt",
+        "value-add", "north star", "drill down", "pivot", "stakeholder",
+        "cross-functional", "optimize", "streamline", "robust", "unpack",
+        "best-in-class", "core competency", "take this offline",
+      ];
+      const buzzContainer = document.getElementById("buzzContainer");
+
+      function spawnBuzzWord() {
+        if (noMotion) return;
+        const w = document.createElement("div");
+        w.className = "buzz-word";
+        w.textContent = DRIFT_WORDS[Math.floor(Math.random() * DRIFT_WORDS.length)];
+        const dur  = 14 + Math.random() * 18;
+        const left = 2 + Math.random() * 96;
+        const rot  = (Math.random() - 0.5) * 22;
+        const op   = 0.055 + Math.random() * 0.07;
+        w.style.cssText = `left:${left}%;bottom:-40px;--rot:${rot}deg;--op:${op};animation-duration:${dur}s;animation-delay:${-Math.random() * dur}s;`;
+        buzzContainer.appendChild(w);
+        setTimeout(() => w.remove(), (dur + 2) * 1000);
+      }
+
+      for (let i = 0; i < 18; i++) spawnBuzzWord();
+      setInterval(spawnBuzzWord, 2200);
+
+      // ── Idle Doris greeting on load ──
+      const IDLE_QUIPS = [
+        "Go on. Drop the memo. I dare you. 👀",
+        "I've stamped worse. Bring it. 📋",
+        "Every buzzword dies eventually. 🪦",
+        "Drop the deck. Let's see what we're dealing with.",
+        "I have red ink and a very low bar. 🖊️",
+      ];
+      setTimeout(() => {
+        speechBubble.textContent = IDLE_QUIPS[Math.floor(Math.random() * IDLE_QUIPS.length)];
+        speechBubble.classList.add("show");
+      }, 900);
+
+      // ── Pill click → fill textarea ──
+      document.querySelectorAll(".pill").forEach(pill => {
+        pill.addEventListener("click", () => {
+          input.value = pill.dataset.text;
+          charCounter.textContent = `${input.value.length} / 1000`;
+          charCounter.classList.toggle("warn", input.value.length > 850);
+          input.focus();
+          pill.style.transform = "scale(0.94)";
+          setTimeout(() => { pill.style.transform = ""; }, 120);
+        });
+      });
+
+      // ── Share card generation (unchanged, uses lastResult.translated) ──
+      function wrapText(ctx, text, x, y, maxW, lh) {
+        const words = text.split(" ");
+        let line = "";
+        for (const word of words) {
+          const test = line + word + " ";
+          if (ctx.measureText(test).width > maxW && line) {
+            ctx.fillText(line.trim(), x, y);
+            line = word + " ";
+            y += lh;
+          } else line = test;
+        }
+        ctx.fillText(line.trim(), x, y);
+        return y;
+      }
+
+      function buildShareCard() {
+        if (!lastResult) return;
+        const { original, translated, pct, verdict, tier } = lastResult;
+        const W = 1000, H = 640;
+        const c = document.createElement("canvas");
+        c.width = W; c.height = H;
+        const x = c.getContext("2d");
+
+        x.fillStyle = "#FAF7F0"; x.fillRect(0, 0, W, H);
+        x.fillStyle = "#15120E";
+        for (let i = 0; i < W; i += 44) x.fillRect(i, 0, 30, 12);
+        x.strokeStyle = "#DCD3BC"; x.lineWidth = 2;
+        x.strokeRect(6, 6, W - 12, H - 12);
+
+        x.fillStyle = "#5b554a";
+        x.font = "20px 'IBM Plex Mono', monospace";
+        x.fillText("CONFIDENTIAL — JARGON TRANSLATOR", 50, 60);
+
+        x.strokeStyle = "#B23A2E"; x.lineWidth = 4;
+        x.strokeRect(50, 82, 430, 62);
+        x.fillStyle = "#B23A2E";
+        x.font = "44px 'Special Elite', monospace";
+        x.fillText("Jargon Translator", 66, 128);
+
+        x.fillStyle = "#9b9384";
+        x.font = "18px 'IBM Plex Mono', monospace";
+        x.fillText("THEY SAID:", 50, 200);
+        x.fillStyle = "#5b554a";
+        x.font = "italic 22px 'IBM Plex Mono', monospace";
+        let yy = wrapText(x, '"' + original + '"', 50, 234, W - 100, 32);
+
+        x.fillStyle = "#5b8a4f";
+        x.font = "18px 'IBM Plex Mono', monospace";
+        x.fillText("TRUTH, DECLASSIFIED:", 50, yy + 54);
+        x.fillStyle = "#1F1B16";
+        x.font = "26px 'IBM Plex Mono', monospace";
+        yy = wrapText(x, translated, 50, yy + 92, W - 100, 38);
+
+        const my = Math.min(yy + 60, H - 120);
+        x.fillStyle = "#DCD3BC"; x.fillRect(50, my, W - 100, 16);
+        const grad = x.createLinearGradient(50, 0, W - 50, 0);
+        grad.addColorStop(0, "#5b8a4f");
+        grad.addColorStop(0.55, "#F2C94C");
+        grad.addColorStop(1, "#B23A2E");
+        x.fillStyle = grad;
+        x.fillRect(50, my, ((W - 100) * pct) / 100, 16);
+
+        x.fillStyle = "#B23A2E";
+        x.font = "28px 'Special Elite', monospace";
+        x.fillText(verdict.emoji + "  BS-O-METER: " + pct + "%  —  🏅 " + tier.name, 50, my + 58);
+
+        x.fillStyle = "#9b9384";
+        x.font = "16px 'IBM Plex Mono', monospace";
+        x.fillText("made with the Corporate Jargon Translator", 50, H - 30);
+
+        return c;
+      }
+
+      shareBtn.addEventListener("click", () => {
+        const card = buildShareCard();
+        if (!card) return;
+        card.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = "jargon-verdict.png"; a.click();
+          URL.revokeObjectURL(url);
+        });
+        shareBtn.textContent = "✓ Saved!";
+        setTimeout(() => { shareBtn.textContent = "⬇ Save as image"; }, 1800);
+      });
+
+      // Start Doris's idle arm bob
+      setTimeout(() => mascotArm.classList.add("idle"), 1400);
+    </script>
+  </body>
+</html>

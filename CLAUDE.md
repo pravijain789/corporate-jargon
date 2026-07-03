@@ -123,5 +123,5 @@ Work through these phases **in order**. Do not skip ahead or combine phases unle
 
 - [x] Phase 0 — Setup (folder structure confirmed, .gitignore confirmed, git initialized locally — no remote yet, Anthropic API key not yet created by user)
 - [x] Phase 1 — Backend (deployed and verified end-to-end: Lambda `corporate-jargon-translator` in us-east-1, fronted by API Gateway HTTP API at <https://xe920nlaba.execute-api.us-east-1.amazonaws.com>, calling Anthropic API directly via Node 18 fetch, billing credits added, confirmed returning correct translations)
-- [ ] Phase 2 — Frontend
+- [x] Phase 2 — Frontend (memo/stamp aesthetic with mascot Doris; real API wired via async fetch to /translate; jargon highlighting + BS-O-Meter + tier + verdict computed client-side; loading skeleton + Doris "thinking" bubble while awaiting API; in-character error state; copy-to-clipboard; save-as-image share card; 1s debounce post-call; 1000-char cap with counter; sound toggle; Ctrl+Enter shortcut; tested end-to-end against live Lambda. Single file: frontend/index.html. No GitHub remote yet — commits pending push.)
 - [ ] Phase 3 — Polish + Launch
