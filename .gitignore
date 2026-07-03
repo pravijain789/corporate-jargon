@@ -4,3 +4,4 @@ node_modules/
 .aws-sam/
 cdk.out/
 *.zip
+CLAUDE.md
