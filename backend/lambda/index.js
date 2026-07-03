@@ -9,10 +9,8 @@ const { SYSTEM_PROMPT } = require("./prompt");
 const MODEL = "claude-haiku-4-5-20251001";
 const ANTHROPIC_VERSION = "2023-06-01";
 
-// Allow requests from any origin during development. Lock this down to the
-// Amplify domain once the frontend is deployed.
 const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://main.drsgpl115xisu.amplifyapp.com",
   "Access-Control-Allow-Headers": "Content-Type",
   "Access-Control-Allow-Methods": "POST,OPTIONS",
   "Content-Type": "application/json",
